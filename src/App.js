@@ -1,24 +1,61 @@
-import logo from './logo.svg';
+
 import './App.css';
+import {useState, useEffect} from 'react'
 
 function App() {
+  const[data, setData]=useState([])
+  
+  useEffect(()=>{
+    fetch('https://jsonplaceholder.typicode.com/todos')
+  .then((response)=>{
+      return response.json()
+    })
+    .then((arr)=>{
+      setData(arr)
+
+    })
+  },[]);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      
+     {data.map((item,index) => {
+const changecolor = (i)=>{
+  const filtered = data.map((item, index)=>{
+    if(index===i){
+      return (
+        {
+          ...item,
+          completed:true
+        }
+      )
+    }return{
+      ...item,
+      completed:false
+    }
+    
+  })
+  setData(filtered)
+
+}
+return(
+  <>
+  <button onClick={()=>changecolor(index)}className={`${item.completed? 'svet':'ffff'}`}>
+    {item.id}
+  </button>
+  <div>
+    {item.title}
+  </div>
+  <div >
+    {item.completed}
+  </div>
+  </>
+  
+  
+)
+     })}
     </div>
+
   );
 }
 
